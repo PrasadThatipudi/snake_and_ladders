@@ -1,3 +1,4 @@
+import { Cycle } from "./src/cycle.js";
 import { SnakeAndLadder, range } from "./src/snake_and_ladder.js";
 
 const randomInt = (from, to) =>
@@ -24,27 +25,6 @@ const debug = function (arg) {
   console.log(arg);
   return arg;
 };
-
-class Cycle {
-  #elements;
-  #index;
-
-  constructor(elements) {
-    this.#elements = elements;
-    this.#index = 0;
-  }
-
-  next() {
-    const element = this.#elements.at(this.#index);
-    this.#index = (this.#index + 1) % this.#elements.length;
-
-    return element;
-  }
-
-  peek() {
-    return this.#elements.at(this.#index);
-  }
-}
 
 const startGame = function (noOfPlayers) {
   const snakeAndLadders = SnakeAndLadder.generateSnakeAndLadders();
