@@ -1,3 +1,8 @@
+const debug = function (arg) {
+  console.log(arg);
+  return arg;
+};
+
 const isNegative = (number) => number < 0;
 
 const range = function (from, to, step) {
@@ -42,10 +47,6 @@ function isScoreExeeded(score) {
   return score > TARGET;
 }
 
-function isPlayerWon(score) {
-  return score === TARGET;
-}
-
 function printPlayerPosition(playerNo, score) {
   console.log(`Player ${playerNo} score is: ${score}`);
 }
@@ -82,13 +83,28 @@ const displayIfSnakeOrLadder = (dice, prevPosition, curPosition) => {
   }
 };
 
-const getPlayerPosition = function (scoreBoard, playerNo) {
-  const prevPosition = scoreBoard[playerNo];
-  const dice = getDiceValue(playerNo);
-  const curPosition = getScore(prevPosition, dice);
-  displayIfSnakeOrLadder(dice, prevPosition, curPosition);
-  printPlayerPosition(playerNo, curPosition);
-  return curPosition;
-};
+class SnakeAndLadder {
+  #score;
+  #noOfPlayers;
 
-export { getPlayerPosition, isPlayerWon };
+  constructor(noOfPlayers) {
+    this.#noOfPlayers = noOfPlayers;
+    this.#score = Array(noOfPlayers).fill(0);
+  }
+
+  updatePlayerPosition(playerNo) {
+    const prevPosition = this.#score[playerNo];
+    const dice = getDiceValue(playerNo);
+    const curPosition = getScore(prevPosition, dice);
+    displayIfSnakeOrLadder(dice, prevPosition, curPosition);
+
+    this.#score[playerNo] = curPosition;
+    return this.#score;
+  }
+
+  isPlayerWon(playerNo) {
+    return this.#score.at(playerNo) === TARGET;
+  }
+}
+
+export { SnakeAndLadder };
