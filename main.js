@@ -30,31 +30,24 @@ const debug = function (arg) {
 const startGame = function (noOfPlayers) {
   const game = new SnakeAndLadder(noOfPlayers);
 
-  let currentPlayer = 0;
+  let currentPlayer = noOfPlayers - 1;
 
-  while (true) {
+  while (!game.isPlayerWon(currentPlayer)) {
+    currentPlayer = (currentPlayer + 1) % noOfPlayers;
+
     if (currentPlayer === 0) displayDivider();
 
     const dice = getDiceValue(currentPlayer);
     const currentState = game.updatePlayerPosition(currentPlayer, dice);
-    if (game.isPlayerWon(currentPlayer)) return currentPlayer;
-
-    currentPlayer = (currentPlayer + 1) % noOfPlayers;
   }
+
+  return currentPlayer;
 };
-
-const displayWinningMsg = (winner) =>
-  console.log(`Congratulations Player ${winner} won the game`);
-
-function playGameWith(noOfPlayers) {
-  const winner = startGame(noOfPlayers);
-  displayWinningMsg(winner);
-}
 
 function main() {
   console.log("Welcome!");
 
-  return playGameWith(2);
+  return startGame(2);
 }
 
 main();
