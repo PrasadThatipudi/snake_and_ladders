@@ -15,3 +15,9 @@
 .cell {
   border: 1px solid black;
 }
+
+.dice {
+  width: 50px;
+  aspect-ratio: 1;
+  border: 1px solid black;
+}

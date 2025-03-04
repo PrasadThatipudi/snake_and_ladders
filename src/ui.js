@@ -19,13 +19,6 @@ const createDice = (diceHandler) => {
   return dice;
 };
 
-const turn = (game, players) => {
-  const currentPlayer = players.next();
-  const dice = rollTheDice();
-
-  const currentState = game.updatePlayerPosition(currentPlayer, dice);
-};
-
 const generateBoard = () => {
   const board = createNode("div", { className: "board" });
   const cellIds = range(1, 101, 1);
@@ -39,6 +32,25 @@ const generateBoard = () => {
   return board;
 };
 
+const updateBoard = (board, currentState) => {
+  const { score } = currentState;
+
+  score.forEach((playerPosition, index) => {
+    const cell = document.getElementById(playerPosition);
+    const playerId = index + 1;
+    cell.textContent = playerId;
+  });
+};
+
+const turn = (game, players, board) => {
+  const currentPlayer = players.next();
+  const dice = rollTheDice();
+
+  const currentState = game.updatePlayerPosition(currentPlayer, dice);
+
+  updateBoard(board, currentState);
+};
+
 const startGame = (game, players) => {
   const board = generateBoard();
   const diceHandler = () => turn(game, players);
@@ -48,8 +60,6 @@ const startGame = (game, players) => {
 };
 
 const main = () => {
-  console.log("Welcome!");
-
   const noOfPlayers = 2;
   const snakeAndLadders = SnakeAndLadder.generateSnakeAndLadders();
   const game = new SnakeAndLadder(noOfPlayers, snakeAndLadders);
