@@ -9,11 +9,11 @@ const rollTheDice = () => randomInt(1, 7);
 export const getNumberSymbol = (number) =>
   ["0️⃣", "1️⃣", "2️⃣", "3️⃣", "4️⃣", "5️⃣", "6️⃣", "7️⃣", "8️⃣", "9️⃣"][number];
 
-printDiceValue = (playerNo, diceValue) => {
+const printDiceValue = (playerNo, diceValue) => {
   console.log(`Player ${playerNo} got ${getNumberSymbol(diceValue)}`);
 };
 
-getDiceValue = (playerNo) => {
+const getDiceValue = (playerNo) => {
   if (prompt(`roll the dice-player ${playerNo}: `, "press enter")) {
     const dice = rollTheDice();
     printDiceValue(playerNo, dice);
@@ -40,7 +40,8 @@ const startGame = function (noOfPlayers) {
     const currentState = game.updatePlayerPosition(currentPlayer, dice);
   }
 
-  return currentPlayer;
+  const winner = players.peek();
+  return winner;
 };
 
 const main = () => {
