@@ -2,34 +2,19 @@ import { Cycle } from "./cycle.js";
 import { SnakeAndLadder, range } from "./snake_and_ladder.js";
 import { createNode } from "./createNode.js";
 
-const randomInt = (from, to) =>
-  from + Math.floor(Math.random() * Math.abs(to - from));
-
-const rollTheDice = () => randomInt(1, 7);
-
-export const getNumberSymbol = (number) =>
-  ["0️⃣", "1️⃣", "2️⃣", "3️⃣", "4️⃣", "5️⃣", "6️⃣", "7️⃣", "8️⃣", "9️⃣"][number];
-
-const printDiceValue = (playerNo, diceValue) => {
-  console.log(`Player ${playerNo} got ${getNumberSymbol(diceValue)}`);
-};
-
-const getDiceValue = (playerNo) => {
-  if (prompt(`roll the dice-player ${playerNo}: `, "press enter")) {
-    const dice = rollTheDice();
-    printDiceValue(playerNo, dice);
-    return dice;
-  }
-};
-
 const debug = function (arg) {
   console.log(arg);
   return arg;
 };
 
+const randomInt = (from, to) =>
+  from + Math.floor(Math.random() * Math.abs(to - from));
+
+const rollTheDice = () => randomInt(1, 7);
+
 const createDice = (diceHandler) => {
-  const style = { width: "50px", aspectRatio: "1" };
-  const dice = createNode("button", { onclick: diceHandler, style });
+  const diceAttributes = { onclick: diceHandler, className: "dice" };
+  const dice = createNode("button", diceAttributes);
 
   return dice;
 };
