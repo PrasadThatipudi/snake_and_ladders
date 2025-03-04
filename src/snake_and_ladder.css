@@ -1,0 +1,17 @@
+* {
+  margin: 0px;
+  padding: 0px;
+  box-sizing: border-box;
+}
+
+.board {
+  width: 800px;
+  aspect-ratio: 1;
+  border: 1px solid black;
+  display: grid;
+  grid-template-columns: repeat(10, 1fr);
+}
+
+.cell {
+  border: 1px solid black;
+}
