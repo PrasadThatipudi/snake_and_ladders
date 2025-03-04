@@ -1,5 +1,6 @@
-import { Cycle } from "./src/cycle.js";
-import { SnakeAndLadder, range } from "./src/snake_and_ladder.js";
+import { Cycle } from "./cycle.js";
+import { SnakeAndLadder, range } from "./snake_and_ladder.js";
+import { createNode } from "./createNode.js";
 
 const randomInt = (from, to) =>
   from + Math.floor(Math.random() * Math.abs(to - from));
@@ -26,28 +27,37 @@ const debug = function (arg) {
   return arg;
 };
 
-const startGame = function (noOfPlayers) {
+const createDice = (diceHandler) => {
+  const style = { width: "50px", aspectRatio: "1" };
+  const dice = createNode("button", { onclick: diceHandler, style });
+
+  return dice;
+};
+
+const turn = (game, players) => {
+  const currentPlayer = players.next();
+  const dice = rollTheDice();
+
+  const currentState = game.updatePlayerPosition(currentPlayer, dice);
+};
+
+const startGame = (game, players) => {
+  const diceHandler = () => turn(game, players);
+
+  document.body.appendChild(createDice(diceHandler));
+};
+
+const main = () => {
+  console.log("Welcome!");
+
+  const noOfPlayers = 2;
   const snakeAndLadders = SnakeAndLadder.generateSnakeAndLadders();
   const game = new SnakeAndLadder(noOfPlayers, snakeAndLadders);
 
   const playerIds = range(0, noOfPlayers, 1);
   const players = new Cycle(playerIds);
 
-  while (!game.isPlayerWon(players.peek())) {
-    const currentPlayer = players.next();
-    const dice = getDiceValue(currentPlayer);
-
-    const currentState = game.updatePlayerPosition(currentPlayer, dice);
-  }
-
-  const winner = players.peek();
-  return winner;
+  startGame(game, players);
 };
 
-const main = () => {
-  console.log("Welcome!");
-
-  return startGame(2);
-};
-
-main();
+window.onload = main;
