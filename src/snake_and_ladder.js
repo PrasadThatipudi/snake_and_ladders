@@ -38,6 +38,10 @@ class SnakeAndLadder {
     return this.#score.at(playerId) === this.#target;
   }
 
+  currentScore() {
+    return this.#score;
+  }
+
   #isScoreExceeded(score) {
     return score > this.#target;
   }
@@ -58,6 +62,7 @@ class SnakeAndLadder {
 
     return { isSnake, isLadder };
   }
+
   static generateSnakeAndLadders() {
     return {
       4: 56,

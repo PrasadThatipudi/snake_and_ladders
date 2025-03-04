@@ -42,26 +42,34 @@ const updateBoard = (currentState) => {
   });
 };
 
-const clearAllPlayerPositions = (board) => {
-  board.childNodes.forEach((node) => (node.textContent = ""));
+const clearAllPlayerPositions = (score) => {
+  score.forEach((playerPosition) => {
+    const cell = document.getElementById(playerPosition);
+
+    cell.textContent = "";
+  });
 };
 
-const turn = (game, players, board) => {
+const turn = (game, players) => {
   const currentPlayer = players.next();
   const dice = rollTheDice();
 
   const currentState = game.updatePlayerPosition(currentPlayer, dice);
 
-  clearAllPlayerPositions(board);
   updateBoard(currentState);
 };
 
 const startGame = (game, players) => {
   const board = generateBoard();
-  const diceHandler = () => turn(game, players, board);
+
+  const diceHandler = () => {
+    clearAllPlayerPositions(game.currentScore());
+    turn(game, players);
+  };
 
   document.body.appendChild(board);
   document.body.appendChild(createDice(diceHandler));
+  updateBoard({ score: game.currentScore() });
 };
 
 const main = () => {
