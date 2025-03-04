@@ -129,4 +129,4 @@ function main() {
   return "Bye👋";
 }
 
-// main();
+main();
