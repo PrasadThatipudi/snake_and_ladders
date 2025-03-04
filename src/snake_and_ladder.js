@@ -21,29 +21,9 @@ const generateBoard = () =>
     .map((index) => range(index * 10 + 1, index * 10 + 11, 1))
     .map((array, index) => (isOdd(index) ? array : reverseArray(array)));
 
-const randomInt = (from, to) =>
-  from + Math.floor(Math.random() * Math.abs(to - from));
-
-const rollTheDice = () => randomInt(1, 7);
-
-export const getNumberSymbol = (number) =>
-  ["0️⃣", "1️⃣", "2️⃣", "3️⃣", "4️⃣", "5️⃣", "6️⃣", "7️⃣", "8️⃣", "9️⃣"][number];
-
-function printDiceValue(playerNo, diceValue) {
-  console.log(`Player ${playerNo} got ${getNumberSymbol(diceValue)}`);
-}
-
-function getDiceValue(playerNo) {
-  if (prompt(`roll the dice-player ${playerNo}: `, "press enter")) {
-    const dice = rollTheDice();
-    printDiceValue(playerNo, dice);
-    return dice;
-  }
-}
-
 const TARGET = 100;
 
-function isScoreExeeded(score) {
+function isScoreExceeded(score) {
   return score > TARGET;
 }
 
@@ -67,43 +47,39 @@ const snakesAndLadders = {
 };
 
 function getScore(playerPosition, dice) {
-  playerPosition += isScoreExeeded(playerPosition + dice) ? 0 : dice;
+  playerPosition += isScoreExceeded(playerPosition + dice) ? 0 : dice;
 
   return playerPosition in snakesAndLadders
     ? snakesAndLadders[playerPosition]
     : playerPosition;
 }
 
-const displayIfSnakeOrLadder = (dice, prevPosition, curPosition) => {
-  if (prevPosition + dice < curPosition) {
-    return console.log("Congrats! You got a 🪜");
-  }
-  if (prevPosition + dice > curPosition) {
-    console.log("Congrats! You caught by 🐍");
-  }
+const isSnakeOrLadder = (dice, prevPosition, curPosition) => {
+  const expectedPosition = dice + prevPosition;
+  const isSnake = expectedPosition > curPosition;
+  const isLadder = expectedPosition < curPosition;
+
+  return { isSnake, isLadder };
 };
 
 class SnakeAndLadder {
   #score;
-  #noOfPlayers;
 
   constructor(noOfPlayers) {
-    this.#noOfPlayers = noOfPlayers;
     this.#score = Array(noOfPlayers).fill(0);
   }
 
-  updatePlayerPosition(playerNo) {
-    const prevPosition = this.#score[playerNo];
-    const dice = getDiceValue(playerNo);
+  updatePlayerPosition(player, dice) {
+    const prevPosition = this.#score[player];
     const curPosition = getScore(prevPosition, dice);
-    displayIfSnakeOrLadder(dice, prevPosition, curPosition);
-
-    this.#score[playerNo] = curPosition;
-    return this.#score;
+    const flag = isSnakeOrLadder(dice, prevPosition, curPosition);
+    this.#score[player] = curPosition;
+    const currentState = { score: this.#score, flag };
+    return currentState;
   }
 
-  isPlayerWon(playerNo) {
-    return this.#score.at(playerNo) === TARGET;
+  isPlayerWon(playerId) {
+    return this.#score.at(playerId) === TARGET;
   }
 }
 
