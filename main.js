@@ -47,7 +47,9 @@ class Cycle {
 }
 
 const startGame = function (noOfPlayers) {
-  const game = new SnakeAndLadder(noOfPlayers);
+  const snakeAndLadders = SnakeAndLadder.generateSnakeAndLadders();
+  const game = new SnakeAndLadder(noOfPlayers, snakeAndLadders);
+
   const playerIds = range(0, noOfPlayers, 1);
   const players = new Cycle(playerIds);
 
