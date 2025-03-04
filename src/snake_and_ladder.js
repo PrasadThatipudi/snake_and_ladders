@@ -84,4 +84,4 @@ class SnakeAndLadder {
   }
 }
 
-export { SnakeAndLadder };
+export { SnakeAndLadder, range };

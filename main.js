@@ -1,4 +1,4 @@
-import { SnakeAndLadder } from "./src/snake_and_ladder.js";
+import { SnakeAndLadder, range } from "./src/snake_and_ladder.js";
 
 const randomInt = (from, to) =>
   from + Math.floor(Math.random() * Math.abs(to - from));
@@ -20,24 +20,41 @@ function getDiceValue(playerNo) {
   }
 }
 
-const displayDivider = () => console.log("-".repeat(40));
-
 const debug = function (arg) {
   console.log(arg);
   return arg;
 };
 
+class Cycle {
+  #elements;
+  #index;
+
+  constructor(elements) {
+    this.#elements = elements;
+    this.#index = 0;
+  }
+
+  next() {
+    const element = this.#elements.at(this.#index);
+    this.#index = (this.#index + 1) % this.#elements.length;
+
+    return element;
+  }
+
+  peek() {
+    return this.#elements.at(this.#index);
+  }
+}
+
 const startGame = function (noOfPlayers) {
   const game = new SnakeAndLadder(noOfPlayers);
+  const playerIds = range(0, noOfPlayers, 1);
+  const players = new Cycle(playerIds);
 
-  let currentPlayer = noOfPlayers - 1;
-
-  while (!game.isPlayerWon(currentPlayer)) {
-    currentPlayer = (currentPlayer + 1) % noOfPlayers;
-
-    if (currentPlayer === 0) displayDivider();
-
+  while (!game.isPlayerWon(players.peek())) {
+    const currentPlayer = players.next();
     const dice = getDiceValue(currentPlayer);
+
     const currentState = game.updatePlayerPosition(currentPlayer, dice);
   }
 
