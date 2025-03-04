@@ -20,7 +20,7 @@ class SnakeAndLadder {
   constructor(noOfPlayers, snakeAndLadders) {
     this.#target = 100;
     this.#snakeAndLadders = snakeAndLadders;
-    this.#score = Array(noOfPlayers).fill(0);
+    this.#score = Array(noOfPlayers).fill(1);
   }
 
   updatePlayerPosition(player, dice) {

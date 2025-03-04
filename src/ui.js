@@ -32,14 +32,18 @@ const generateBoard = () => {
   return board;
 };
 
-const updateBoard = (board, currentState) => {
+const updateBoard = (currentState) => {
   const { score } = currentState;
 
   score.forEach((playerPosition, index) => {
     const cell = document.getElementById(playerPosition);
     const playerId = index + 1;
-    cell.textContent = playerId;
+    cell.textContent = [cell.textContent, playerId].join(" ").trim();
   });
+};
+
+const clearAllPlayerPositions = (board) => {
+  board.childNodes.forEach((node) => (node.textContent = ""));
 };
 
 const turn = (game, players, board) => {
@@ -48,12 +52,13 @@ const turn = (game, players, board) => {
 
   const currentState = game.updatePlayerPosition(currentPlayer, dice);
 
-  updateBoard(board, currentState);
+  clearAllPlayerPositions(board);
+  updateBoard(currentState);
 };
 
 const startGame = (game, players) => {
   const board = generateBoard();
-  const diceHandler = () => turn(game, players);
+  const diceHandler = () => turn(game, players, board);
 
   document.body.appendChild(board);
   document.body.appendChild(createDice(diceHandler));
