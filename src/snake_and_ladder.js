@@ -1,5 +1,3 @@
-import { displayTable } from "../practice/table/tableWithArrays.js";
-
 const isNegative = (number) => number < 0;
 
 const range = function (from, to, step) {
@@ -93,40 +91,4 @@ const getPlayerPosition = function (scoreBoard, playerNo) {
   return curPosition;
 };
 
-const displayDividor = () => console.log("-".repeat(40));
-
-const startGame = function (scoreBoard, noOfPlayers) {
-  let currentPlayer = 0;
-
-  while (true) {
-    if (currentPlayer === 0) displayDividor();
-
-    const curPosition = getPlayerPosition(scoreBoard, currentPlayer);
-    if (isPlayerWon(curPosition)) return currentPlayer;
-
-    scoreBoard[currentPlayer] = curPosition;
-    currentPlayer = (currentPlayer + 1) % noOfPlayers;
-  }
-};
-
-const displayWinningMsg = (winner) =>
-  console.log(`Congratulations Player ${winner} won the game`);
-
-function playGameWith(noOfPlayers) {
-  const scoreBoard = Array.from({ length: noOfPlayers }, () => 0);
-  const winner = startGame(scoreBoard, noOfPlayers);
-  displayWinningMsg(winner);
-}
-
-function main() {
-  console.log("Welcome!");
-
-  if (confirm("Do you want to play this game?")) {
-    const noOfPlayers = prompt("Enter number of players: ");
-    return playGameWith(noOfPlayers);
-  }
-
-  return "Bye👋";
-}
-
-main();
+export { getPlayerPosition, isPlayerWon };
