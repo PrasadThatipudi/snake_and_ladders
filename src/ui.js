@@ -41,9 +41,24 @@ const turn = (game, players) => {
   const currentState = game.updatePlayerPosition(currentPlayer, dice);
 };
 
+const generateBoard = () => {
+  const board = createNode("div", { className: "board" });
+  const cellIds = range(1, 101, 1);
+
+  cellIds.forEach((cellId) => {
+    const cell = createNode("div", { className: "cell", id: cellId });
+
+    board.appendChild(cell);
+  });
+
+  return board;
+};
+
 const startGame = (game, players) => {
+  const board = generateBoard();
   const diceHandler = () => turn(game, players);
 
+  document.body.appendChild(board);
   document.body.appendChild(createDice(diceHandler));
 };
 

@@ -5,7 +5,7 @@ const debug = function (arg) {
 
 const isNegative = (number) => number < 0;
 
-const range = function (from, to, step) {
+const range = (from, to, step = 1) => {
   if (step === 0 || isNegative(to - from) !== isNegative(step)) return [];
 
   const noOfTerms = Math.ceil(Math.abs((to - from) / step));
