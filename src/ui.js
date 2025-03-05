@@ -76,13 +76,9 @@ const stopTheGame = (winner, diceHandler) => {
 
   const dice = document.querySelector(".dice");
   dice.removeEventListener("click", diceHandler);
-
-  if (confirm(`Player ${winnerId} won!\nDo you want to play again?`))
-    window.location.reload();
 };
 
 const turn = (game, currentPlayer, playersSymbols) => {
-  // const currentPlayer = players.next();
   const dice = rollTheDice();
 
   const currentState = game.updatePlayerPosition(currentPlayer, dice);
@@ -111,7 +107,7 @@ const startGame = (game, players, playersSymbols) => {
 
 const main = () => {
   const noOfPlayers = 2;
-  const snakeAndLadders = SnakeAndLadder.generateSnakeAndLadders();
+  const snakeAndLadders = SnakeAndLadder.generateSnakesAndLadders();
   const game = new SnakeAndLadder(noOfPlayers, snakeAndLadders);
 
   const playerIds = range(0, noOfPlayers, 1);

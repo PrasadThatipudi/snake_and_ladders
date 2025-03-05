@@ -63,7 +63,7 @@ class SnakeAndLadder {
     return { isSnake, isLadder };
   }
 
-  static generateSnakeAndLadders() {
+  static generateSnakesAndLadders() {
     return {
       4: 56,
       29: 31,
