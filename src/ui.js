@@ -23,11 +23,16 @@ const createDice = (diceHandler) => {
 
 const isOdd = (number) => (number & 1) === 1;
 
-const boardOrder = () =>
-  Array.from({ length: 10 }, (_, index) => index)
-    .reverse()
-    .map((index) => range(index * 10 + 1, index * 10 + 11, 1))
-    .flatMap((array, index) => (isOdd(index) ? array : array.toReversed()));
+const boardOrder = () => {
+  const numbers = range(1, 101, 1);
+  const splits = range(90, -1, -10);
+
+  return splits.flatMap((splitIndex, index) => {
+    const column = numbers.splice(splitIndex);
+
+    return isOdd(index) ? column : column.toReversed();
+  });
+};
 
 const generateBoard = () => {
   const board = createNode("div", { className: "board" });
