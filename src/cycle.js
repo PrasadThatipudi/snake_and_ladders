@@ -1,9 +1,9 @@
-export class Cycle {
+class Cycle {
   #elements;
   #index;
 
   constructor(elements) {
-    this.#elements = elements;
+    this.#elements = new Set(elements);
     this.#index = 0;
   }
 
@@ -18,3 +18,5 @@ export class Cycle {
     return this.#elements.at(this.#index);
   }
 }
+
+export { Cycle };
