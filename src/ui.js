@@ -37,8 +37,10 @@ const updateBoard = (currentState, playersSymbols) => {
 
   score.forEach((playerPosition, index) => {
     const cell = document.getElementById(playerPosition);
-    const playerId = playersSymbols.at(index);
-    cell.textContent = [cell.textContent, playerId].join(" ").trim();
+    const symbol = playersSymbols.at(index);
+    const player = createNode("div", {}, symbol);
+
+    cell.appendChild(player);
   });
 };
 
