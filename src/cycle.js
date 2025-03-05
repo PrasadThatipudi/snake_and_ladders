@@ -17,6 +17,10 @@ class Cycle {
   peek() {
     return this.#elements.at(this.#index);
   }
+
+  indexOf(element) {
+    return Array.from(this.#elements).indexOf(element);
+  }
 }
 
 export { Cycle };
