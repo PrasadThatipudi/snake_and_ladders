@@ -13,8 +13,10 @@ const randomInt = (from, to) =>
 const rollTheDice = () => randomInt(1, 7);
 
 const createDice = (diceHandler) => {
-  const diceAttributes = { onclick: diceHandler, className: "dice" };
+  const diceAttributes = { className: "dice" };
   const dice = createNode("button", diceAttributes);
+
+  dice.addEventListener("click", diceHandler);
 
   return dice;
 };
@@ -40,9 +42,7 @@ const generateBoard = () => {
   return board;
 };
 
-const updateBoard = (currentState, playersSymbols) => {
-  const { score } = currentState;
-
+const updateBoard = (score, playersSymbols) => {
   score.forEach((playerPosition, index) => {
     const cell = document.getElementById(playerPosition);
     const symbol = playersSymbols.at(index);
@@ -66,27 +66,42 @@ const displayDiceValue = (diceValue) => {
   dice.textContent = diceValue;
 };
 
-const turn = (game, players, playersSymbols) => {
-  const currentPlayer = players.next();
+const stopTheGame = (winner, diceHandler) => {
+  const winnerId = winner + 1;
+
+  const dice = document.querySelector(".dice");
+  dice.removeEventListener("click", diceHandler);
+
+  if (confirm(`Player ${winnerId} won!\nDo you want to play again?`))
+    window.location.reload();
+};
+
+const turn = (game, currentPlayer, playersSymbols) => {
+  // const currentPlayer = players.next();
   const dice = rollTheDice();
 
   const currentState = game.updatePlayerPosition(currentPlayer, dice);
 
   displayDiceValue(dice);
-  updateBoard(currentState, playersSymbols);
+  updateBoard(currentState.score, playersSymbols);
 };
 
 const startGame = (game, players, playersSymbols) => {
   const board = generateBoard();
 
   const diceHandler = () => {
+    const currentPlayer = players.next();
+
     clearAllPlayerPositions(game.currentScore());
-    turn(game, players, playersSymbols);
+    turn(game, currentPlayer, playersSymbols);
+
+    if (game.isPlayerWon(currentPlayer))
+      stopTheGame(currentPlayer, diceHandler);
   };
 
   document.body.appendChild(board);
   document.body.appendChild(createDice(diceHandler));
-  updateBoard({ score: game.currentScore() }, playersSymbols);
+  updateBoard(game.currentScore(), playersSymbols);
 };
 
 const main = () => {
