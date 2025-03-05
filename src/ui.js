@@ -19,9 +19,17 @@ const createDice = (diceHandler) => {
   return dice;
 };
 
+const isOdd = (number) => (number & 1) === 1;
+
+const boardOrder = () =>
+  Array.from({ length: 10 }, (_, index) => index)
+    .reverse()
+    .map((index) => range(index * 10 + 1, index * 10 + 11, 1))
+    .flatMap((array, index) => (isOdd(index) ? array : array.toReversed()));
+
 const generateBoard = () => {
   const board = createNode("div", { className: "board" });
-  const cellIds = range(1, 101, 1);
+  const cellIds = boardOrder();
 
   cellIds.forEach((cellId) => {
     const cell = createNode("div", { className: "cell", id: cellId });
