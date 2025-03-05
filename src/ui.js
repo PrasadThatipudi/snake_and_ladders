@@ -50,12 +50,19 @@ const clearAllPlayerPositions = (score) => {
   });
 };
 
+const displayDiceValue = (diceValue) => {
+  const dice = document.querySelector(".dice");
+
+  dice.textContent = diceValue;
+};
+
 const turn = (game, players, playersSymbols) => {
   const currentPlayer = players.next();
   const dice = rollTheDice();
 
   const currentState = game.updatePlayerPosition(currentPlayer, dice);
 
+  displayDiceValue(dice);
   updateBoard(currentState, playersSymbols);
 };
 
