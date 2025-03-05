@@ -3,7 +3,7 @@ class Cycle {
   #index;
 
   constructor(elements) {
-    this.#elements = new Set(elements);
+    this.#elements = elements;
     this.#index = 0;
   }
 
@@ -20,6 +20,10 @@ class Cycle {
 
   indexOf(element) {
     return Array.from(this.#elements).indexOf(element);
+  }
+
+  at(index) {
+    this.#elements.at(index);
   }
 }
 

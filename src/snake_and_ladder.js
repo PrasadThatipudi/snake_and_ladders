@@ -29,7 +29,7 @@ class SnakeAndLadder {
     const flag = this.#isSnakeOrLadder(dice, prevPosition, curPosition);
 
     this.#score[player] = curPosition;
-    const currentState = debug({ score: this.#score, flag });
+    const currentState = { score: this.#score, flag };
 
     return currentState;
   }

@@ -32,12 +32,12 @@ const generateBoard = () => {
   return board;
 };
 
-const updateBoard = (currentState) => {
+const updateBoard = (currentState, playersSymbols) => {
   const { score } = currentState;
 
   score.forEach((playerPosition, index) => {
     const cell = document.getElementById(playerPosition);
-    const playerId = index + 1;
+    const playerId = playersSymbols.at(index);
     cell.textContent = [cell.textContent, playerId].join(" ").trim();
   });
 };
@@ -50,26 +50,26 @@ const clearAllPlayerPositions = (score) => {
   });
 };
 
-const turn = (game, players) => {
+const turn = (game, players, playersSymbols) => {
   const currentPlayer = players.next();
   const dice = rollTheDice();
 
   const currentState = game.updatePlayerPosition(currentPlayer, dice);
 
-  updateBoard(currentState);
+  updateBoard(currentState, playersSymbols);
 };
 
-const startGame = (game, players) => {
+const startGame = (game, players, playersSymbols) => {
   const board = generateBoard();
 
   const diceHandler = () => {
     clearAllPlayerPositions(game.currentScore());
-    turn(game, players);
+    turn(game, players, playersSymbols);
   };
 
   document.body.appendChild(board);
   document.body.appendChild(createDice(diceHandler));
-  updateBoard({ score: game.currentScore() });
+  updateBoard({ score: game.currentScore() }, playersSymbols);
 };
 
 const main = () => {
@@ -78,9 +78,10 @@ const main = () => {
   const game = new SnakeAndLadder(noOfPlayers, snakeAndLadders);
 
   const playerIds = range(0, noOfPlayers, 1);
+  const symbols = ["🔴", "🟢"];
   const players = new Cycle(playerIds);
 
-  startGame(game, players);
+  startGame(game, players, symbols);
 };
 
 window.onload = main;
