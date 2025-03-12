@@ -1,5 +1,6 @@
 import { Cycle } from "./cycle.js";
-import { SnakeAndLadder, range } from "./snake_and_ladder.js";
+import { SnakeAndLadder } from "./snake_and_ladder.js";
+import { range } from "./range.js";
 import { createNode } from "./createNode.js";
 
 const debug = function (arg) {
