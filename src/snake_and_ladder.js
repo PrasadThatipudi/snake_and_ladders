@@ -2,25 +2,37 @@ class SnakeAndLadder {
   #score;
   #snakeAndLadders;
   #target;
+  #players;
 
-  constructor(noOfPlayers, snakeAndLadders) {
+  constructor(players, snakeAndLadders) {
     this.#target = 100;
     this.#snakeAndLadders = snakeAndLadders;
-    this.#score = Array(noOfPlayers).fill(1);
+    this.#players = players;
+    this.#score = Array(players.length).fill(98);
+  }
+
+  get players() {
+    return this.#players;
+  }
+
+  #playerId(player) {
+    return this.#players.indexOf(player);
   }
 
   updatePlayerPosition(player, dice) {
-    const prevPosition = this.#score[player];
+    const playerId = this.#playerId(player);
+    const prevPosition = this.#score[playerId];
     const curPosition = this.#getScore(prevPosition, dice);
     const flag = this.#isSnakeOrLadder(dice, prevPosition, curPosition);
 
-    this.#score[player] = curPosition;
+    this.#score[playerId] = curPosition;
     const currentState = { score: this.#score, flag };
 
     return currentState;
   }
 
-  isPlayerWon(playerId) {
+  isPlayerWon(player) {
+    const playerId = this.#playerId(player);
     return this.#score.at(playerId) === this.#target;
   }
 

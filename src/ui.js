@@ -2,6 +2,7 @@ import { Cycle } from "./cycle.js";
 import { SnakeAndLadder } from "./snake_and_ladder.js";
 import { range } from "./range.js";
 import { createNode } from "./createNode.js";
+import { Player } from "./player.js";
 
 const randomInt = (from, to) =>
   from + Math.floor(Math.random() * Math.abs(to - from));
@@ -43,10 +44,10 @@ const generateBoard = () => {
   return board;
 };
 
-const updateBoard = (score, playersSymbols) => {
+const updateBoard = (score, players) => {
   score.forEach((playerPosition, index) => {
     const cell = document.getElementById(playerPosition);
-    const symbol = playersSymbols.at(index);
+    const symbol = players.at(index).symbol;
     const player = createNode("div", {}, symbol);
 
     cell.appendChild(player);
@@ -86,45 +87,56 @@ const stopTheGame = (winner, diceHandler) => {
   showWinner(winner);
 };
 
-const turn = (game, currentPlayer, playersSymbols) => {
+const turn = (game, currentPlayer) => {
   const dice = rollTheDice();
 
   const currentState = game.updatePlayerPosition(currentPlayer, dice);
 
   displayDiceValue(dice);
-  updateBoard(currentState.score, playersSymbols);
+  updateBoard(currentState.score, game.players);
 };
 
-const startGame = (game, players, playersSymbols) => {
+const startGame = (game, players) => {
   const board = generateBoard();
 
   const diceHandler = () => {
     const currentPlayer = players.next();
-    const currentPlayerSymbol = playersSymbols[currentPlayer];
 
     clearAllPlayerPositions(game.currentScore());
-    turn(game, currentPlayer, playersSymbols);
+    turn(game, currentPlayer);
 
     if (game.isPlayerWon(currentPlayer)) {
-      stopTheGame(currentPlayerSymbol, diceHandler);
+      stopTheGame(currentPlayer.symbol, diceHandler);
     }
   };
 
   document.body.appendChild(board);
   document.body.appendChild(createDice(diceHandler));
-  updateBoard(game.currentScore(), playersSymbols);
+  updateBoard(game.currentScore(), game.players);
+};
+
+const readPlayers = (noOfPlayers) => {
+  const players = [
+    ["Prasad", "🔴"],
+    ["Surendra", "🟢"],
+  ];
+
+  return players.map(
+    ([playerName, playerSymbol]) => new Player(playerName, playerSymbol)
+  );
 };
 
 const main = () => {
   const noOfPlayers = 2;
   const snakeAndLadders = SnakeAndLadder.generateSnakesAndLadders();
-  const game = new SnakeAndLadder(noOfPlayers, snakeAndLadders);
+  const players = readPlayers(noOfPlayers);
+  const game = new SnakeAndLadder(players, snakeAndLadders);
 
-  const playerIds = range(0, noOfPlayers, 1);
-  const symbols = ["🔴", "🟢"];
-  const players = new Cycle(playerIds);
+  // const playerIds = range(0, noOfPlayers, 1);
+  // const symbols = ["🔴", "🟢"];
+  const playersCycle = new Cycle(players);
 
-  startGame(game, players, symbols);
+  startGame(game, playersCycle);
 };
 
 document.addEventListener("DOMContentLoaded", main);
