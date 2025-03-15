@@ -3,11 +3,6 @@ import { SnakeAndLadder } from "./snake_and_ladder.js";
 import { range } from "./range.js";
 import { createNode } from "./createNode.js";
 
-const debug = function (arg) {
-  console.log(arg);
-  return arg;
-};
-
 const randomInt = (from, to) =>
   from + Math.floor(Math.random() * Math.abs(to - from));
 
@@ -72,11 +67,23 @@ const displayDiceValue = (diceValue) => {
   dice.textContent = diceValue;
 };
 
-const stopTheGame = (winner, diceHandler) => {
-  const winnerId = winner + 1;
+const showWinner = (winner) => {
+  const wonMessage = document.createElement("div");
+  const wonMessageBox = document.createElement("div");
+  const board = document.querySelector(".board");
 
+  const winningMessage = `Player ${winner} won!`;
+
+  wonMessageBox.classList.add("wonMessage");
+  wonMessage.textContent = winningMessage;
+  wonMessageBox.appendChild(wonMessage);
+  board.appendChild(wonMessageBox);
+};
+
+const stopTheGame = (winner, diceHandler) => {
   const dice = document.querySelector(".dice");
   dice.removeEventListener("click", diceHandler);
+  showWinner(winner);
 };
 
 const turn = (game, currentPlayer, playersSymbols) => {
@@ -93,12 +100,14 @@ const startGame = (game, players, playersSymbols) => {
 
   const diceHandler = () => {
     const currentPlayer = players.next();
+    const currentPlayerSymbol = playersSymbols[currentPlayer];
 
     clearAllPlayerPositions(game.currentScore());
     turn(game, currentPlayer, playersSymbols);
 
-    if (game.isPlayerWon(currentPlayer))
-      stopTheGame(currentPlayer, diceHandler);
+    if (game.isPlayerWon(currentPlayer)) {
+      stopTheGame(currentPlayerSymbol, diceHandler);
+    }
   };
 
   document.body.appendChild(board);
@@ -118,4 +127,4 @@ const main = () => {
   startGame(game, players, symbols);
 };
 
-window.onload = main;
+document.addEventListener("DOMContentLoaded", main);

@@ -5,6 +5,7 @@
 }
 
 .board {
+  position: relative;
   width: 800px;
   aspect-ratio: 1;
   border: 1px solid black;
@@ -26,4 +27,16 @@
   width: 50px;
   aspect-ratio: 1;
   border: 1px solid black;
+}
+
+.wonMessage {
+  position: absolute;
+  top: 40%;
+  width: 100%;
+  height: 10%;
+  font-size: 2rem;
+  background-color: rgb(241, 249, 2);
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }

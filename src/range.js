@@ -6,3 +6,5 @@ const range = (from, to, step = 1) => {
   const noOfTerms = Math.ceil(Math.abs((to - from) / step));
   return Array.from({ length: noOfTerms }, (_, index) => from + index * step);
 };
+
+export { range };

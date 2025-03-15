@@ -1,8 +1,3 @@
-const debug = function (arg) {
-  console.log(arg);
-  return arg;
-};
-
 class SnakeAndLadder {
   #score;
   #snakeAndLadders;
@@ -72,4 +67,4 @@ class SnakeAndLadder {
   }
 }
 
-export { SnakeAndLadder, range };
+export { SnakeAndLadder };
