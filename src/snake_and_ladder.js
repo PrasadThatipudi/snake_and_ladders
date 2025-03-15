@@ -8,7 +8,7 @@ class SnakeAndLadder {
     this.#target = 100;
     this.#snakeAndLadders = snakeAndLadders;
     this.#players = players;
-    this.#score = Array(players.length).fill(98);
+    this.#score = Array(players.length).fill(1);
   }
 
   get players() {

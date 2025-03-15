@@ -73,7 +73,7 @@ const showWinner = (winner) => {
   const wonMessageBox = document.createElement("div");
   const board = document.querySelector(".board");
 
-  const winningMessage = `Player ${winner} won!`;
+  const winningMessage = `Player ${winner.name}(${winner.symbol}) won!`;
 
   wonMessageBox.classList.add("wonMessage");
   wonMessage.textContent = winningMessage;
@@ -106,7 +106,7 @@ const startGame = (game, players) => {
     turn(game, currentPlayer);
 
     if (game.isPlayerWon(currentPlayer)) {
-      stopTheGame(currentPlayer.symbol, diceHandler);
+      stopTheGame(currentPlayer, diceHandler);
     }
   };
 
@@ -116,14 +116,14 @@ const startGame = (game, players) => {
 };
 
 const readPlayers = (noOfPlayers) => {
-  const players = [
-    ["Prasad", "🔴"],
-    ["Surendra", "🟢"],
-  ];
+  const playerIds = range(0, noOfPlayers);
 
-  return players.map(
-    ([playerName, playerSymbol]) => new Player(playerName, playerSymbol)
-  );
+  return playerIds.map((playerId) => {
+    const playerName = prompt(`Enter player ${playerId + 1} name: `);
+    const playerSymbol = prompt(`Enter player ${playerId + 1} symbol: `);
+
+    return new Player(playerName, playerSymbol);
+  });
 };
 
 const main = () => {
@@ -132,8 +132,6 @@ const main = () => {
   const players = readPlayers(noOfPlayers);
   const game = new SnakeAndLadder(players, snakeAndLadders);
 
-  // const playerIds = range(0, noOfPlayers, 1);
-  // const symbols = ["🔴", "🟢"];
   const playersCycle = new Cycle(players);
 
   startGame(game, playersCycle);
