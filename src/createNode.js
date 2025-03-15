@@ -1,5 +1,6 @@
 const addStyles = (node, style) =>
   Object.keys(style).map((key) => (node.style[key] = style[key]));
+
 const addAttributes = (node, attributes) => {
   const { style, ...rest } = attributes;
 
@@ -9,7 +10,8 @@ const addAttributes = (node, attributes) => {
     node[property] = rest[property];
   });
 };
-export const createNode = (nodeName, attributes, textContent) => {
+
+const createNode = (nodeName, attributes, textContent) => {
   const node = document.createElement(nodeName);
 
   node.textContent = textContent;
@@ -17,3 +19,5 @@ export const createNode = (nodeName, attributes, textContent) => {
 
   return node;
 };
+
+export { createNode };
