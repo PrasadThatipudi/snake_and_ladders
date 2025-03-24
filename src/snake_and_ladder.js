@@ -23,10 +23,10 @@ class SnakeAndLadder {
     const playerId = this.#playerId(player);
     const prevPosition = this.#score[playerId];
     const curPosition = this.#getScore(prevPosition, dice);
-    const flag = this.#isSnakeOrLadder(dice, prevPosition, curPosition);
+    const tileOutcome = this.#tileOutcome(dice, prevPosition, curPosition);
 
     this.#score[playerId] = curPosition;
-    const currentState = { score: this.#score, flag };
+    const currentState = { score: this.#score, tileOutcome };
 
     return currentState;
   }
@@ -53,12 +53,14 @@ class SnakeAndLadder {
       : newPosition;
   }
 
-  #isSnakeOrLadder(dice, prevPosition, curPosition) {
+  #tileOutcome(dice, prevPosition, curPosition) {
     const expectedPosition = dice + prevPosition;
     const isSnake = expectedPosition > curPosition;
     const isLadder = expectedPosition < curPosition;
 
-    return { isSnake, isLadder };
+    if (isSnake) return "snake";
+    if (isLadder) return "ladder";
+    return "none";
   }
 
   static generateSnakesAndLadders() {
