@@ -1,7 +1,15 @@
 {
   "lint": {
     "rules": {
-      "tags": ["recommended"]
+      "tags": ["recommended"],
+      "include": ["eqeqeq", "no-window"]
+    }
+  },
+  "tasks": {
+    "server": {
+      "command": "deno run -A --watch main.js",
+      "description": "Runs server on port 8000 on watch mode",
+      "dependencies": []
     }
   }
 }
