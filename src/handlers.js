@@ -86,9 +86,19 @@ const createNewGame = async (request) => {
 
   const game = new SnakeAndLadder(players, snakesAndLadders);
 
-  request.context.games.set(1, game);
+  request.context.games.set(0, game);
 
   return new Response(JSON.stringify(gameInfo), { status: 200 });
 };
 
-export { handleFile, handleRequest, logRequest, createNewGame };
+const parseGameId = (request) =>
+  Number(request._url.searchParams.get("gameId"));
+
+const serveBoard = (request) => {
+  const gameId = parseGameId(request);
+  const game = request.context.games.get(gameId);
+
+  return new Response(JSON.stringify(game.currentScore()));
+};
+
+export { handleFile, handleRequest, logRequest, createNewGame, serveBoard };

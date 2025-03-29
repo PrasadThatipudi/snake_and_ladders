@@ -9,13 +9,18 @@ const readPlayers = (noOfPlayers) => {
   return players;
 };
 
+const debug = function (arg) {
+  console.log(arg);
+  return arg;
+};
+
 const requestForNewGame = async (players) => {
   const response = await fetch("/create_game", {
     method: "POST",
     body: players,
   });
 
-  const { gameId } = response.json();
+  const { gameId } = await response.json();
   return gameId;
 };
 
@@ -24,6 +29,7 @@ const createGame = async () => {
   const players = readPlayers(noOfPlayers);
 
   const gameId = await requestForNewGame(players);
+  console.log(gameId);
 
   return { gameId, players };
 };
@@ -120,28 +126,41 @@ const turn = (game, currentPlayer) => {
   updateBoard(currentState.score, game.players);
 };
 
-const startGame = (_gameId, players) => {
+const diceHandler = () => {
+  const currentPlayer = players.next();
+
+  clearAllPlayerPositions(game.currentScore());
+  turn(game, currentPlayer);
+
+  if (game.isPlayerWon(currentPlayer)) {
+    stopTheGame(currentPlayer, diceHandler);
+  }
+};
+
+const setupBoard = () => {
   const board = generateBoard();
-
-  const diceHandler = () => {
-    const currentPlayer = players.next();
-
-    clearAllPlayerPositions(game.currentScore());
-    turn(game, currentPlayer);
-
-    if (game.isPlayerWon(currentPlayer)) {
-      stopTheGame(currentPlayer, diceHandler);
-    }
-  };
 
   document.body.appendChild(board);
   document.body.appendChild(createDice(diceHandler));
-  // updateBoard(game.currentScore(), game.players);
+};
+
+const fetchBoard = async (gameId) => {
+  const formData = new FormData();
+
+  formData.set("gameId", gameId);
+
+  return await fetch(`/fetch_board?gameId=${gameId}`);
+};
+
+const startGame = async (gameId, players) => {
+  setupBoard();
+  const board = await fetchBoard(gameId);
+  updateBoard(board, players);
 };
 
 const handleGame = async () => {
   const { gameId, players } = await createGame();
-  startGame(gameId, players);
+  await startGame(gameId, players);
 };
 
 document.addEventListener("DOMContentLoaded", handleGame);
