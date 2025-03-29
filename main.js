@@ -1,7 +1,7 @@
-import { handler } from "./src/app.js";
+import { createHandler } from "./src/app.js";
 
 const main = (port) => {
-  Deno.serve({ port }, handler);
+  Deno.serve({ port }, createHandler());
 };
 
 main(8000);

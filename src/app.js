@@ -1,30 +1,25 @@
-const insertLogRecord = async (logRecord) =>
-  await Deno.writeTextFile("./logRequest.txt", logRecord, { append: true });
+import { handleFile, logRequest, handleRequest } from "./handlers.js";
 
-const logRequest = (request) => {
-  const date = new Date();
-  const timeString = date.toTimeString().split(" ").at(0);
-  const dateString = date.toDateString();
-  const userAgent = request.headers.get("user-agent");
-
-  const logRecord = [
-    dateString,
-    timeString,
-    request.method,
-    request.url,
-    userAgent,
-  ]
-    .join(" ")
-    .concat("\n");
-
-  insertLogRecord(logRecord);
-  console.log(logRecord);
+const createServeStaticFile = (root) => (request) => {
+  return handleFile(`./${root}${request._url.pathname}`);
 };
 
-const handler = (request) => {
-  logRequest(request);
+const serveHomePage = () => handleFile("./public/index.html");
 
-  return new Response("ok");
+const createHandler = () => {
+  const routes = {
+    GET: { "/": serveHomePage },
+  };
+
+  return (request) => {
+    logRequest(request);
+    const url = new URL(request.url);
+
+    request.serveStaticFile = createServeStaticFile("public");
+    request.routes = routes;
+    request._url = url;
+
+    return handleRequest(request);
+  };
 };
-
-export { handler };
+export { createHandler };
