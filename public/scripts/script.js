@@ -26,10 +26,10 @@ const requestForNewGame = async (players) => {
 
 const createGame = async () => {
   const noOfPlayers = 2;
-  const players = readPlayers(noOfPlayers);
+  const playersFormData = readPlayers(noOfPlayers);
 
-  const gameId = await requestForNewGame(players);
-  console.log(gameId);
+  const gameId = await requestForNewGame(playersFormData);
+  const players = [...playersFormData].map(([id]) => id);
 
   return { gameId, players };
 };
@@ -77,7 +77,7 @@ const generateBoard = () => {
 const updateBoard = (score, players) => {
   score.forEach((playerPosition, index) => {
     const cell = document.getElementById(playerPosition);
-    const symbol = players.at(index).symbol;
+    const symbol = players.at(index);
     const player = createNode("div", {}, symbol);
 
     cell.appendChild(player);
@@ -149,13 +149,15 @@ const fetchBoard = async (gameId) => {
 
   formData.set("gameId", gameId);
 
-  return await fetch(`/fetch_board?gameId=${gameId}`);
+  const response = await fetch(`/fetch_board?gameId=${gameId}`);
+
+  return response.json();
 };
 
 const startGame = async (gameId, players) => {
   setupBoard();
   const board = await fetchBoard(gameId);
-  updateBoard(board, players);
+  updateBoard(board, debug(players));
 };
 
 const handleGame = async () => {
