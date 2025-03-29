@@ -1,4 +1,9 @@
-import { handleFile, logRequest, handleRequest } from "./handlers.js";
+import {
+  handleFile,
+  logRequest,
+  handleRequest,
+  createNewGame,
+} from "./handlers.js";
 
 const createServeStaticFile = (root) => (request) => {
   return handleFile(`./${root}${request._url.pathname}`);
@@ -6,9 +11,10 @@ const createServeStaticFile = (root) => (request) => {
 
 const serveHomePage = () => handleFile("./public/index.html");
 
-const createHandler = () => {
+const createHandler = (games) => {
   const routes = {
     GET: { "/": serveHomePage },
+    POST: { "/create_game": createNewGame },
   };
 
   return (request) => {
@@ -18,6 +24,7 @@ const createHandler = () => {
     request.serveStaticFile = createServeStaticFile("public");
     request.routes = routes;
     request._url = url;
+    request.context = { games };
 
     return handleRequest(request);
   };

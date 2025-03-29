@@ -1,5 +1,6 @@
 import * as path from "@bearz/path";
 import mime from "mime";
+import { SnakeAndLadder } from "./snake_and_ladder.js";
 
 const handleNotFound = () => {
   const options = { headers: { "content-type": "text/html" }, status: 404 };
@@ -68,4 +69,16 @@ const handleRequest = (request) => {
   return request.serveStaticFile(request);
 };
 
-export { handleFile, handleRequest, logRequest };
+const createNewGame = async (request) => {
+  const gameInfo = { gameId: 0 };
+  // const formData = await request.formData();
+  // const players = parsePlayers(formData);
+  // const snakesAndLadders = SnakeAndLadder.generateSnakesAndLadders();
+
+  // const game = new SnakeAndLadder(players, snakesAndLadders);
+  // request.context.games.set(1, game);
+
+  return new Response(JSON.stringify(gameInfo), { status: 200 });
+};
+
+export { handleFile, handleRequest, logRequest, createNewGame };
