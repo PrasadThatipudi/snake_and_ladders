@@ -136,23 +136,23 @@ const turn = async (currentPlayer, players) => {
 
 const isPlayerWon = (score) => score === 100;
 
-const diceHandler = (gameId, players) => async () => {
-  const currentPlayer = players.next();
-
-  clearAllPlayerPositions(await fetchBoard(gameId));
-  const currentPlayerPos = await turn(currentPlayer, players);
-
-  if (isPlayerWon(currentPlayerPos)) {
-    stopTheGame(currentPlayer, diceHandler);
-  }
-};
-
 const setupBoard = (gameId, players) => {
   const board = generateBoard();
   const playersCycle = new Cycle(players);
 
+  const diceHandler = async () => {
+    const currentPlayer = playersCycle.next();
+
+    clearAllPlayerPositions(await fetchBoard(gameId));
+    const currentPlayerPos = await turn(currentPlayer, playersCycle);
+
+    if (isPlayerWon(currentPlayerPos)) {
+      stopTheGame(currentPlayer, diceHandler);
+    }
+  };
+
   document.body.appendChild(board);
-  document.body.appendChild(createDice(diceHandler(gameId, playersCycle)));
+  document.body.appendChild(createDice(diceHandler));
 };
 
 const fetchBoard = async (gameId) => {
