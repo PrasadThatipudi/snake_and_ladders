@@ -4,7 +4,7 @@ import {
   handleRequest,
   createNewGame,
   serveBoard,
-  handleUpdateBoard
+  handleUpdateBoard,
 } from "./handlers.js";
 
 const createServeStaticFile = (root) => (request) => {

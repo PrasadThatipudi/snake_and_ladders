@@ -10,11 +10,6 @@ const readPlayers = (noOfPlayers) => {
   return players;
 };
 
-const debug = function (arg) {
-  console.log(arg);
-  return arg;
-};
-
 const requestForNewGame = async (players) => {
   const response = await fetch("/create_game", {
     method: "POST",
@@ -130,19 +125,24 @@ const updatePlayerPosition = async (playerId, dice) => {
 const turn = async (currentPlayer, players) => {
   const dice = rollTheDice();
 
-  const currentState = await updatePlayerPosition(currentPlayer, dice);
+  const response = await updatePlayerPosition(currentPlayer, dice);
+  const currentState = await response.json();
 
   displayDiceValue(dice);
-  updateBoard(currentState.score, game.players);
+  updateBoard(currentState.score, players);
+
+  return currentState.score.at(currentPlayer);
 };
+
+const isPlayerWon = (score) => score === 100;
 
 const diceHandler = (gameId, players) => async () => {
   const currentPlayer = players.next();
 
   clearAllPlayerPositions(await fetchBoard(gameId));
-  await turn(currentPlayer);
+  const currentPlayerPos = await turn(currentPlayer, players);
 
-  if (game.isPlayerWon(currentPlayer)) {
+  if (isPlayerWon(currentPlayerPos)) {
     stopTheGame(currentPlayer, diceHandler);
   }
 };

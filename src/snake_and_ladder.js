@@ -1,8 +1,3 @@
-const debug = function (arg) {
-  console.log(arg);
-  return arg;
-};
-
 class SnakeAndLadder {
   #score;
   #snakeAndLadders;
@@ -24,8 +19,7 @@ class SnakeAndLadder {
     return this.#players.indexOf(player);
   }
 
-  updatePlayerPosition(player, dice) {
-    const playerId = this.#playerId(player);
+  updatePlayerPosition(playerId, dice) {
     const prevPosition = this.#score[playerId];
     const curPosition = this.#getScore(prevPosition, dice);
     const tileOutcome = this.#tileOutcome(dice, prevPosition, curPosition);

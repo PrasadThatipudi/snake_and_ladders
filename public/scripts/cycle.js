@@ -23,7 +23,7 @@ class Cycle {
   }
 
   at(index) {
-    this.#elements.at(index);
+    return this.#elements.at(index);
   }
 }
 
