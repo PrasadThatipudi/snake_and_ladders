@@ -1,6 +1,7 @@
 import * as path from "@bearz/path";
 import mime from "mime";
 import { SnakeAndLadder } from "./snake_and_ladder.js";
+import { Player } from "./player.js";
 
 const handleNotFound = () => {
   const options = { headers: { "content-type": "text/html" }, status: 404 };
@@ -69,14 +70,23 @@ const handleRequest = (request) => {
   return request.serveStaticFile(request);
 };
 
+const parsePlayers = (formData) => {
+  const players = [];
+
+  formData.forEach((playerId) => players.push(new Player(playerId)));
+
+  return players;
+};
+
 const createNewGame = async (request) => {
   const gameInfo = { gameId: 0 };
-  // const formData = await request.formData();
-  // const players = parsePlayers(formData);
-  // const snakesAndLadders = SnakeAndLadder.generateSnakesAndLadders();
+  const formData = await request.formData();
+  const players = parsePlayers(formData);
+  const snakesAndLadders = SnakeAndLadder.generateSnakesAndLadders();
 
-  // const game = new SnakeAndLadder(players, snakesAndLadders);
-  // request.context.games.set(1, game);
+  const game = new SnakeAndLadder(players, snakesAndLadders);
+
+  request.context.games.set(1, game);
 
   return new Response(JSON.stringify(gameInfo), { status: 200 });
 };

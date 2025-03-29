@@ -7,10 +7,12 @@ const readPlayers = (noOfPlayers) => {
 };
 
 const requestForNewGame = async (players) => {
-  await fetch("http:localhost:8000/create_game", {
+  const response = await fetch("/create_game", {
     method: "POST",
     body: players,
   });
+
+  console.log(response);
 };
 
 const createGame = () => {

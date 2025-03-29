@@ -14,6 +14,8 @@ describe("POST /create_game", () => {
       method: "POST",
       body: players,
     });
+
+    request.context = { games: new Map() };
     const response = await createNewGame(request);
 
     assertEquals(response.status, 200);
