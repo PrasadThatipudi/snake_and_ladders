@@ -1,0 +1,35 @@
+{
+  "version": "4",
+  "specifiers": {
+    "jsr:@bearz/chars@0.1": "0.1.0",
+    "jsr:@bearz/path@^0.0.0": "0.0.0",
+    "npm:lodash@^4.17.21": "4.17.21",
+    "npm:mime@^4.0.6": "4.0.6"
+  },
+  "jsr": {
+    "@bearz/chars@0.1.0": {
+      "integrity": "37140b8b88c2059c6366ffeb00d7122c0db1ab99459e2b0f434a49047618d789"
+    },
+    "@bearz/path@0.0.0": {
+      "integrity": "490a4c2cebd22c1f59abf2a9439a19171021e9b85cdc7cea2cdd6a4601d5e801",
+      "dependencies": [
+        "jsr:@bearz/chars"
+      ]
+    }
+  },
+  "npm": {
+    "lodash@4.17.21": {
+      "integrity": "sha512-v2kDEe57lecTulaDIuNTPy3Ry4gLGJ6Z1O3vE1krgXZNrsQ+LFTGHVxVjcXPs17LhbZVGedAJv8XZ1tvj5FvSg=="
+    },
+    "mime@4.0.6": {
+      "integrity": "sha512-4rGt7rvQHBbaSOF9POGkk1ocRP16Md1x36Xma8sz8h8/vfCUI2OtEIeCqe4Ofes853x4xDoPiFLIT47J5fI/7A=="
+    }
+  },
+  "workspace": {
+    "dependencies": [
+      "jsr:@bearz/path@^0.0.0",
+      "npm:lodash@^4.17.21",
+      "npm:mime@^4.0.6"
+    ]
+  }
+}

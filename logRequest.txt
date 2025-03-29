@@ -1,1 +1,15 @@
 Sat Mar 29 2025 15:10:02 GET http://localhost:8000/ curl/8.7.1
+Sat Mar 29 2025 15:26:41 GET http://localhost:8000/ curl/8.7.1
+Sat Mar 29 2025 15:27:22 GET http://localhost:8000/ curl/8.7.1
+Sat Mar 29 2025 15:27:55 GET http://localhost:8000/ Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/134.0.0.0 Safari/537.36
+Sat Mar 29 2025 15:27:55 GET http://localhost:8000/src/snake_and_ladder.css Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/134.0.0.0 Safari/537.36
+Sat Mar 29 2025 15:27:55 GET http://localhost:8000/src/ui.js Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/134.0.0.0 Safari/537.36
+Sat Mar 29 2025 15:27:59 GET http://localhost:8000/src/snake_and_ladder.css Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/134.0.0.0 Safari/537.36
+Sat Mar 29 2025 15:28:50 GET http://localhost:8000/ curl/8.7.1
+Sat Mar 29 2025 15:28:54 GET http://localhost:8000/ Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/134.0.0.0 Safari/537.36
+Sat Mar 29 2025 15:28:54 GET http://localhost:8000/src/ui.js Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/134.0.0.0 Safari/537.36
+Sat Mar 29 2025 15:29:10 GET http://localhost:8000/ Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/134.0.0.0 Safari/537.36
+Sat Mar 29 2025 15:29:10 GET http://localhost:8000/scripts/cycle.js Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/134.0.0.0 Safari/537.36
+Sat Mar 29 2025 15:29:10 GET http://localhost:8000/scripts/snake_and_ladder.js Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/134.0.0.0 Safari/537.36
+Sat Mar 29 2025 15:29:10 GET http://localhost:8000/scripts/range.js Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/134.0.0.0 Safari/537.36
+Sat Mar 29 2025 15:29:10 GET http://localhost:8000/scripts/player.js Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/134.0.0.0 Safari/537.36

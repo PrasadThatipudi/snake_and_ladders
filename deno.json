@@ -11,5 +11,10 @@
       "description": "Runs server on port 8000 on watch mode",
       "dependencies": []
     }
+  },
+  "imports": {
+    "@bearz/path": "jsr:@bearz/path@^0.0.0",
+    "lodash": "npm:lodash@^4.17.21",
+    "mime": "npm:mime@^4.0.6"
   }
 }
