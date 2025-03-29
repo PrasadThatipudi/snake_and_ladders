@@ -1,3 +1,4 @@
+import { Cycle } from "./cycle.js";
 import { createNode } from "./createNode.js";
 import { range } from "./range.js";
 
@@ -117,47 +118,53 @@ const stopTheGame = (winner, diceHandler) => {
   showWinner(winner);
 };
 
-const turn = (game, currentPlayer) => {
+const updatePlayerPosition = async (playerId, dice) => {
+  const formData = new FormData();
+
+  formData.set("playerId", playerId);
+  formData.set("dice", dice);
+
+  return await fetch("/update_board", { method: "POST", body: formData });
+};
+
+const turn = async (currentPlayer, players) => {
   const dice = rollTheDice();
 
-  const currentState = game.updatePlayerPosition(currentPlayer, dice);
+  const currentState = await updatePlayerPosition(currentPlayer, dice);
 
   displayDiceValue(dice);
   updateBoard(currentState.score, game.players);
 };
 
-const diceHandler = () => {
+const diceHandler = (gameId, players) => async () => {
   const currentPlayer = players.next();
 
-  clearAllPlayerPositions(game.currentScore());
-  turn(game, currentPlayer);
+  clearAllPlayerPositions(await fetchBoard(gameId));
+  await turn(currentPlayer);
 
   if (game.isPlayerWon(currentPlayer)) {
     stopTheGame(currentPlayer, diceHandler);
   }
 };
 
-const setupBoard = () => {
+const setupBoard = (gameId, players) => {
   const board = generateBoard();
+  const playersCycle = new Cycle(players);
 
   document.body.appendChild(board);
-  document.body.appendChild(createDice(diceHandler));
+  document.body.appendChild(createDice(diceHandler(gameId, playersCycle)));
 };
 
 const fetchBoard = async (gameId) => {
-  const formData = new FormData();
-
-  formData.set("gameId", gameId);
-
   const response = await fetch(`/fetch_board?gameId=${gameId}`);
 
   return response.json();
 };
 
 const startGame = async (gameId, players) => {
-  setupBoard();
+  setupBoard(gameId, players);
   const board = await fetchBoard(gameId);
-  updateBoard(board, debug(players));
+  updateBoard(board, players);
 };
 
 const handleGame = async () => {

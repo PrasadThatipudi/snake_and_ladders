@@ -1,3 +1,8 @@
+const debug = function (arg) {
+  console.log(arg);
+  return arg;
+};
+
 class SnakeAndLadder {
   #score;
   #snakeAndLadders;

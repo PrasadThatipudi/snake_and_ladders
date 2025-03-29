@@ -3,7 +3,8 @@ import {
   logRequest,
   handleRequest,
   createNewGame,
-  serveBoard
+  serveBoard,
+  handleUpdateBoard
 } from "./handlers.js";
 
 const createServeStaticFile = (root) => (request) => {
@@ -15,7 +16,7 @@ const serveHomePage = () => handleFile("./public/index.html");
 const createHandler = (games) => {
   const routes = {
     GET: { "/": serveHomePage, "/fetch_board": serveBoard },
-    POST: { "/create_game": createNewGame },
+    POST: { "/create_game": createNewGame, "/update_board": handleUpdateBoard },
   };
 
   return (request) => {

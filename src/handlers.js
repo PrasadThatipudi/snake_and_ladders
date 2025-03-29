@@ -101,4 +101,31 @@ const serveBoard = (request) => {
   return new Response(JSON.stringify(game.currentScore()));
 };
 
-export { handleFile, handleRequest, logRequest, createNewGame, serveBoard };
+const parseFormData = async (request) => {
+  const formData = await request.formData();
+
+  return Object.fromEntries([...formData]);
+};
+
+const handleUpdateBoard = async (request) => {
+  const gameId = parseGameId(request);
+  const { playerId, dice } = await parseFormData(request);
+
+  const game = request.context.games.get(gameId);
+
+  const currentState = game.updatePlayerPosition(
+    Number(playerId),
+    Number(dice)
+  );
+
+  return new Response(JSON.stringify(currentState));
+};
+
+export {
+  handleFile,
+  handleRequest,
+  logRequest,
+  createNewGame,
+  serveBoard,
+  handleUpdateBoard,
+};
