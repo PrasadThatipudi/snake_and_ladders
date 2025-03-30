@@ -1,8 +1,34 @@
 import { Cycle } from "./cycle.js";
-import { SnakeAndLadder } from "./snake_and_ladder.js";
-import { range } from "./range.js";
 import { createNode } from "./createNode.js";
-import { Player } from "./player.js";
+import { range } from "./range.js";
+
+const readPlayers = (noOfPlayers) => {
+  const players = new FormData();
+
+  Array.from({ length: noOfPlayers }, (_, id) => players.set(id, id));
+
+  return players;
+};
+
+const requestForNewGame = async (players) => {
+  const response = await fetch("/create_game", {
+    method: "POST",
+    body: players,
+  });
+
+  const { gameId } = await response.json();
+  return gameId;
+};
+
+const createGame = async () => {
+  const noOfPlayers = 2;
+  const playersFormData = readPlayers(noOfPlayers);
+
+  const gameId = await requestForNewGame(playersFormData);
+  const players = [...playersFormData].map(([id]) => id);
+
+  return { gameId, players };
+};
 
 const randomInt = (from, to) =>
   from + Math.floor(Math.random() * Math.abs(to - from));
@@ -47,7 +73,7 @@ const generateBoard = () => {
 const updateBoard = (score, players) => {
   score.forEach((playerPosition, index) => {
     const cell = document.getElementById(playerPosition);
-    const symbol = players.at(index).symbol;
+    const symbol = players.at(index);
     const player = createNode("div", {}, symbol);
 
     cell.appendChild(player);
@@ -87,54 +113,63 @@ const stopTheGame = (winner, diceHandler) => {
   showWinner(winner);
 };
 
-const turn = (game, currentPlayer) => {
-  const dice = rollTheDice();
+const updatePlayerPosition = async (playerId, dice) => {
+  const formData = new FormData();
 
-  const currentState = game.updatePlayerPosition(currentPlayer, dice);
+  formData.set("playerId", playerId);
+  formData.set("dice", dice);
 
-  displayDiceValue(dice);
-  updateBoard(currentState.score, game.players);
+  return await fetch("/update_board", { method: "POST", body: formData });
 };
 
-const startGame = (game, players) => {
+const turn = async (currentPlayer, players) => {
+  const dice = rollTheDice();
+
+  const response = await updatePlayerPosition(currentPlayer, dice);
+  const currentState = await response.json();
+
+  displayDiceValue(dice);
+  updateBoard(currentState.score, players);
+
+  return currentState.score.at(currentPlayer);
+};
+
+const isPlayerWon = (score) => score === 100;
+
+const setupBoard = (gameId, players) => {
   const board = generateBoard();
+  const playersCycle = new Cycle(players);
 
-  const diceHandler = () => {
-    const currentPlayer = players.next();
+  const diceHandler = async () => {
+    const currentPlayer = playersCycle.next();
 
-    clearAllPlayerPositions(game.currentScore());
-    turn(game, currentPlayer);
+    clearAllPlayerPositions(await fetchBoard(gameId));
+    const currentPlayerPos = await turn(currentPlayer, playersCycle);
 
-    if (game.isPlayerWon(currentPlayer)) {
+    if (isPlayerWon(currentPlayerPos)) {
       stopTheGame(currentPlayer, diceHandler);
     }
   };
 
   document.body.appendChild(board);
   document.body.appendChild(createDice(diceHandler));
-  updateBoard(game.currentScore(), game.players);
 };
 
-const readPlayers = (noOfPlayers) => {
-  const playerIds = range(0, noOfPlayers);
+const fetchBoard = async (gameId) => {
+  const response = await fetch(`/fetch_board?gameId=${gameId}`);
 
-  return playerIds.map((playerId) => {
-    const playerName = prompt(`Enter player ${playerId + 1} name: `);
-    const playerSymbol = prompt(`Enter player ${playerId + 1} symbol: `);
-
-    return new Player(playerName, playerSymbol);
-  });
+  return response.json();
 };
 
-const main = () => {
-  const noOfPlayers = 2;
-  const snakeAndLadders = SnakeAndLadder.generateSnakesAndLadders();
-  const players = readPlayers(noOfPlayers);
-  const game = new SnakeAndLadder(players, snakeAndLadders);
-
-  const playersCycle = new Cycle(players);
-
-  startGame(game, playersCycle);
+const startGame = async (gameId, players) => {
+  setupBoard(gameId, players);
+  const board = await fetchBoard(gameId);
+  updateBoard(board, players);
 };
 
-document.addEventListener("DOMContentLoaded", main);
+const handleGame = async () => {
+  const { gameId, players } = await createGame();
+  await startGame(gameId, players);
+};
+
+document.addEventListener("DOMContentLoaded", handleGame);
